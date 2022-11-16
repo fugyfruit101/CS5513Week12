@@ -1,46 +1,36 @@
 import Head from 'next/head';
 import Layout from '../components/layout';
-import { getAllIds, getData, getDataTwo} from '../lib/data';
+import { getAllIds, getData } from '../lib/data';
 
 export async function getStaticProps({ params }) {
   const itemData = await getData(params.id);
-   //console.log(itemData);
-  const itemDataTwo = await getDataTwo(params.id);
-   console.log(itemDataTwo);
+  // console.log(itemData);
   return {
     props: {
-      itemData, itemDataTwo
+      itemData
     }
   };
 }
 
-
-
 export async function getStaticPaths() {
-  const paths = getAllIds();
+  const paths = await getAllIds();
   return {
     paths,
     fallback: false
   };
 }
 
-export default function Entry({ itemData, itemDataTwo}) {
+export default function Entry({ itemData }) {
   return (
     <Layout>
       <article className="card col-6">
         <div className="card-body">
-          <h5 className="card-title">{itemData.name}</h5>
-          <h6 className="card-subtitle mb-2 text-muted">{itemData.phone}</h6>
-          <p className="card-text">{itemData.birthdate}</p>
-          <a href={'mailto:' + itemData.email} className="card-link">{itemData.email}</a>
-          <h5 className="cart-title">{itemDataTwo.name}</h5>
-          <h6 className="card-subtitle">{itemDataTwo.connection}</h6>
-          <h6 className="card-subtitle mb-2 text-muted">{itemDataTwo.phone}</h6>
-          <p className="card-text">{itemDataTwo.birthdate}</p>
-          <a href={'mailto:' + itemDataTwo.email} className="card-link">{itemDataTwo.email}</a>
+          <h5 className="card-title">{itemData.post_title}</h5>
+          <h6 className="card-subtitle mb-2 text-muted">{itemData.post_status}</h6>
+          <p className="card-text">{itemData.post_content}</p>
+          <a href={'mailto:' + itemData.email} className="card-link">{itemData.post_date}</a>
         </div>
-        
       </article>
     </Layout>
-  );
+  ); 
 }
